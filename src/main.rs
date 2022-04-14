@@ -7,6 +7,7 @@ mod renderer;
 use sdl2::event::Event;
 use sdl2::image::{self, InitFlag, LoadTexture};
 use sdl2::keyboard::Keycode;
+use sdl2::mixer::{AUDIO_S16LSB, DEFAULT_CHANNELS};
 use sdl2::pixels::Color;
 use sdl2::rect::{Point, Rect};
 use specs::prelude::*;
@@ -136,6 +137,37 @@ fn initialize_enemy(world: &mut World, enemy_spritesheet: usize, position: Point
 
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
+
+    // audio stuff (MOVE TO MODULE LATER)
+    let _audio = sdl_context.audio()?;
+    let frequency = 44_100;
+    let format = AUDIO_S16LSB;
+    let channels = DEFAULT_CHANNELS;
+    let chunk_size = 1_024;
+    sdl2::mixer::open_audio(frequency, format, channels, chunk_size)?;
+    let _mixer_context = sdl2::mixer::init(
+        sdl2::mixer::InitFlag::MP3
+            | sdl2::mixer::InitFlag::FLAC
+            | sdl2::mixer::InitFlag::MOD
+            | sdl2::mixer::InitFlag::OGG,
+    )?;
+
+    // Number of mixing channels available for sound effect chunks
+    // to play simultaneously
+    sdl2::mixer::allocate_channels(2);
+
+    let music = sdl2::mixer::Music::from_file("assets/dancehall.mp3")?;
+    fn hook_finished() {
+        println!("play ends! from rust cb");
+    }
+
+    sdl2::mixer::Music::hook_finished(hook_finished);
+
+    println!("music => {:?}", music);
+    println!("music type => {:?}", music.get_type());
+    println!("music volume => {:?}", sdl2::mixer::Music::get_volume());
+    println!("play => {:?}", music.play(1));
+
     let video_subsystem = sdl_context.video()?;
 
     let _image_context = image::init(InitFlag::PNG | InitFlag::JPG)?;
@@ -183,7 +215,6 @@ pub fn main() -> Result<(), String> {
     initialize_enemy(&mut world, enemy_spritesheet, Point::new(-150, 170));
 
     let mut event_pump = sdl_context.event_pump()?;
-    let mut i = 0;
     'running: loop {
         // None - no change, Some(MovementCommand) - perform movement
         let mut movement_command = None;
@@ -254,14 +285,13 @@ pub fn main() -> Result<(), String> {
         *world.write_resource() = movement_command;
 
         // Update
-        i = (i + 1) % 255;
         dispatcher.dispatch(&world);
         world.maintain();
 
         // Render
         renderer::render(
             &mut canvas,
-            Color::RGB(i, 64, 255 - i),
+            Color::RGB(0, 64, 255),
             &textures,
             world.system_data(),
         )?;
