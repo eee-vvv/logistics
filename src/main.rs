@@ -1,8 +1,8 @@
-mod animator;
-mod components;
-mod keyboard;
-mod physics;
-mod renderer;
+use logistics::animator;
+use logistics::components;
+use logistics::keyboard::{MovementCommand, Keyboard};
+use logistics::physics;
+use logistics::renderer;
 
 use sdl2::event::Event;
 use sdl2::image::{self, InitFlag, LoadTexture};
@@ -14,11 +14,6 @@ use specs::prelude::*;
 use std::time::Duration;
 
 use crate::components::*;
-
-pub enum MovementCommand {
-    Stop,
-    Move(Direction),
-}
 
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
@@ -71,7 +66,7 @@ pub fn main() -> Result<(), String> {
     let texture_creator = canvas.texture_creator();
 
     let mut dispatcher = DispatcherBuilder::new()
-        .with(keyboard::Keyboard, "Keyboard", &[])
+        .with(Keyboard, "Keyboard", &[])
         .with(physics::Physics, "Physics", &["Keyboard"])
         .with(animator::Animator, "Animator", &["Keyboard"])
         .build();

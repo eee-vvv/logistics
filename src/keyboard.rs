@@ -2,11 +2,14 @@ use specs::prelude::*;
 
 use crate::components::*;
 
-use super::MovementCommand;
-
 const PLAYER_MOVEMENT_SPEED: i32 = 20;
 
 pub struct Keyboard;
+
+pub enum MovementCommand {
+    Stop,
+    Move(Direction),
+}
 
 impl<'a> System<'a> for Keyboard {
     type SystemData = (
