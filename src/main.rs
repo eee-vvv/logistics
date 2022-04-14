@@ -58,7 +58,7 @@ pub fn main() -> Result<(), String> {
     let _image_context = image::init(InitFlag::PNG | InitFlag::JPG)?;
 
     let window = video_subsystem
-        .window("game tutorial", 800, 600)
+        .window("~~~LOGISTICS~~~", 800, 600)
         .position_centered()
         .build()
         .expect("could not initialize video subsystem");
