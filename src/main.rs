@@ -1,13 +1,14 @@
 use logistics::animator;
 use logistics::components;
-use logistics::keyboard::{MovementCommand, Keyboard};
+use logistics::keyboard::{Keyboard, MovementCommand};
 use logistics::physics;
 use logistics::renderer;
 
 use sdl2::event::Event;
 use sdl2::image::{self, InitFlag, LoadTexture};
 use sdl2::keyboard::Keycode;
-use sdl2::mixer::{AUDIO_S16LSB, DEFAULT_CHANNELS};
+use sdl2::mixer::AUDIO_S16LSB;
+use sdl2::mixer::DEFAULT_CHANNELS;
 use sdl2::pixels::Color;
 use sdl2::rect::{Point, Rect};
 use specs::prelude::*;
@@ -18,8 +19,8 @@ use crate::components::*;
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
 
-    // audio stuff (MOVE TO MODULE LATER)
-    let _audio = sdl_context.audio()?;
+    let _audio_subsystem = sdl_context.audio()?;
+
     let frequency = 44_100;
     let format = AUDIO_S16LSB;
     let channels = DEFAULT_CHANNELS;
