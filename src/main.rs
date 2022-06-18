@@ -82,18 +82,18 @@ pub fn main() -> Result<(), String> {
 
     let textures = [
         texture_creator.load_texture("assets/player.png")?,
-        texture_creator.load_texture("assets/reaper.png")?,
+        // texture_creator.load_texture("assets/enemy.png")?,
     ];
     // First texture in textures array
     let player_spritesheet = 0;
     // Second texture in textures array
-    let enemy_spritesheet = 1;
+    // let enemy_spritesheet = 1;
 
     initialize_player(&mut world, player_spritesheet);
 
-    initialize_enemy(&mut world, enemy_spritesheet, Point::new(-150, -150));
-    initialize_enemy(&mut world, enemy_spritesheet, Point::new(150, -190));
-    initialize_enemy(&mut world, enemy_spritesheet, Point::new(-150, 170));
+    // initialize_enemy(&mut world, enemy_spritesheet, Point::new(-150, -150));
+    // initialize_enemy(&mut world, enemy_spritesheet, Point::new(150, -190));
+    // initialize_enemy(&mut world, enemy_spritesheet, Point::new(-150, 170));
 
     let mut event_pump = sdl_context.event_pump()?;
     'running: loop {
