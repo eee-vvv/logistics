@@ -81,7 +81,7 @@ pub fn main() -> Result<(), String> {
     world.insert(movement_command);
 
     let textures = [
-        texture_creator.load_texture("assets/bardo.png")?,
+        texture_creator.load_texture("assets/player.png")?,
         texture_creator.load_texture("assets/reaper.png")?,
     ];
     // First texture in textures array
